@@ -3,79 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Shopping Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            background-color: #f7f7f7;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            overflow: hidden;
+            margin: 0; /* Remove default margin */
         }
+
         .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full screen height */
+            max-height: 100%; /* Prevent it from overflowing */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #FF9900;
+            font-size: 36px;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #232f3e;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-bar::placeholder {
+            color: #999;
+        }
+
+        .product-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-bottom: 20px;
+            height: calc(100% - 200px); /* Adjust the height to fit within the screen */
+        }
+
+        .product-card {
             background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: transform 0.3s ease-in-out;
         }
-        .container h1 {
-            margin-bottom: 20px;
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .product-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .product-card .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FF9900;
+        }
+
+        .buy-button {
+            padding: 10px 20px;
+            background-color: #FF9900;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .buy-button:hover {
+            background-color: #e68a00;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            padding: 10px 0;
+            width: 100%;
+            background-color: #232f3e;
+            color: white;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #FF9900;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBoGo963CApg7rxnJ2Z2v5BETZlU2weQnQ",
-            authDomain: "all-in-one-database.firebaseapp.com",
-            databaseURL: "https://all-in-one-database-default-rtdb.firebaseio.com",
-            projectId: "all-in-one-database",
-            storageBucket: "all-in-one-database.appspot.com",
-            messagingSenderId: "586125993756",
-            appId: "1:586125993756:web:5c4ffc97122342ce6afcd9",
-            measurementId: "G-NM8XT3QTWG"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Function to log IP address
-        function logIPAddress(ip) {
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, "");
-            set(ref(database, 'ipAddresses/' + timestamp), {
-                ip: ip,
-                timestamp: new Date().toISOString()
-            }).then(() => {
-                document.getElementById('response').innerText = 'Cute mo kev!';
-            }).catch((error) => {
-                console.error('Error logging IP address:', error);
-                document.getElementById('response').innerText = 'hahahahaha: ' + error.message;
-            });
-        }
-
-        // Fetch user's IP address
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                logIPAddress(data.ip);
-            })
-            .catch(error => {
-                console.error('Error fetching IP address:', error);
-                document.getElementById('response').innerText = 'hahahaha: ' + error.message;
-            });
-    </script>
 </head>
 <body>
+
     <div class="container">
-        <h1>Welcome Kev</h1>
-        <p id="response">waiting poo...</p>
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="logo">Umazon Shop</div>
+            <div class="nav-links">
+                <a href="#">All</a>
+                <a href="#">Orders</a>
+                <a href="#">Cart</a>
+                <a href="#">Account</a>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <input type="text" class="search-bar" placeholder="Search for products, brands, or categories">
+
+        <!-- Page Title -->
+        <h1>Welcome to Umazon!</h1>
+        
+        <!-- Product Cards -->
+        <div class="product-cards">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 1">
+                <h3>lip tint</h3>
+                <p>sobrang pula ng labi mo dito parang sinapak. FREE SHIPPING</p>
+                <div class="price">₱90.99</div>
+                <button class="buy-button" onclick="buyProduct('Product 1')">Add to Cart</button>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 2">
+                <h3>Iphone 19 pro</h3>
+                <p>Iphone 19 pro kunyari Cellphone dadating graba pala NO REFUND.</p>
+                <div class="price">₱35.49</div>
+                <button class="buy-button" onclick="buyProduct('Product 2')">Add to Cart</button>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 3">
+                <h3>Tshirt ni 2pac</h3>
+                <p>uso sa mga bisakol mong tropa FREE SHIPPING MAY ISSUE TO BUTAS UNG LIKOD.</p>
+                <div class="price">₱12.99</div>
+                <button class="buy-button" onclick="buyProduct('Product 3')">Add to Cart</button>
+            </div>
+            <!-- Product 4 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 4">
+                <h3>USB</h3>
+                <p>1mb usb pwede downloadan ng isang picture.</p>
+                <div class="price">₱8.99</div>
+                <button class="buy-button" onclick="buyProduct('Product 4')">Add to Cart</button>
+            </div>
+            <!-- Product 5 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 5">
+                <h3>House and lot</h3>
+                <p>house and lot sa tondo NO REFUND.</p>
+                <div class="price">₱25.99</div>
+                <button class="buy-button" onclick="buyProduct('Product 5')">Add to Cart</button>
+            </div>
+            <!-- Product 6 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 6">
+                <h3>aso</h3>
+                <p>pwede pang adobo no refund.</p>
+                <div class="price">₱40.49</div>
+                <button class="buy-button" onclick="buyProduct('Product 6')">Add to Cart</button>
+            </div>
+            <!-- Product 7 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 7">
+                <h3>pc set</h3>
+                <p>pc set pero mouse lang.</p>
+                <div class="price">₱18.75</div>
+                <button class="buy-button" onclick="buyProduct('Product 7')">Add to Cart</button>
+            </div>
+            <!-- Product 8 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Product 8">
+                <h3>headset</h3>
+                <p>pero isa lang nagana</p>
+                <div class="price">₱15.99</div>
+                <button class="buy-button" onclick="buyProduct('Product 8')">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Amazon Clone. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
     </div>
+
+    <script>
+        function buyProduct(productName) {
+            alert("You added " + productName + " to your cart!");
+        }
+    </script>
+
 </body>
 </html>
